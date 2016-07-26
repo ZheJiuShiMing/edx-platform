@@ -1,6 +1,8 @@
 /**
  * View for the receipt page.
  */
+
+/* globals _, Backbone */
 var edx = edx || {};
 
 (function ($, _, Backbone) {
@@ -320,9 +322,9 @@ var edx = edx || {};
         el: $('#receipt-container')
     });
 
-})(jQuery, _, Backbone);     // jshint ignore:line
+})(jQuery, _, Backbone);
 
-function completeOrder(event) {     // jshint ignore:line
+function completeOrder(event) {
     var courseKey = $(event).data("course-key"),
         username = $(event).data("username"),
         providerId = $(event).data("provider"),

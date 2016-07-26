@@ -1,3 +1,5 @@
+/* globals sandbox */
+
 (function(sandbox) {
     'use strict';
     require(["jquery", "backbone", "cms/js/main", "edx-ui-toolkit/js/utils/spec-helpers/ajax-helpers", "jquery.cookie"],
@@ -78,4 +80,4 @@
         });
     });
 
-}).call(this, sandbox);  //jshint ignore:line
+}).call(this, sandbox);
