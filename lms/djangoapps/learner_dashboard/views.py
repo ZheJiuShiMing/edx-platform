@@ -1,7 +1,4 @@
 """Learner dashboard views"""
-from urlparse import urljoin
-
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import Http404
@@ -23,12 +20,7 @@ def program_listing(request):
         raise Http404
 
     meter = utils.ProgramProgressMeter(request.user)
-    programs = meter.engaged_programs
-
-    marketing_url = urljoin(settings.MKTG_URLS.get('ROOT'), programs_config.marketing_path).rstrip('/')
-
-    for program in programs:
-        program['detail_url'] = utils.get_program_detail_url(program, marketing_url)
+    programs, marketing_url = utils.attach_program_detail_url(meter.engaged_programs)
 
     context = {
         'credentials': get_programs_credentials(request.user),

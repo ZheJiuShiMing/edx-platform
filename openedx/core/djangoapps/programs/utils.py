@@ -2,7 +2,9 @@
 """Helper functions for working with Programs."""
 import datetime
 import logging
+from urlparse import urljoin
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -52,63 +54,6 @@ def get_programs(user, program_id=None):
     return get_edx_api_data(programs_config, user, 'programs', resource_id=program_id, cache_key=cache_key)
 
 
-def flatten_programs(programs, course_ids):
-    """Flatten the result returned by the Programs API.
-
-    Arguments:
-        programs (list): Serialized programs
-        course_ids (list): Course IDs to key on.
-
-    Returns:
-        dict, programs keyed by course ID
-    """
-    flattened = {}
-
-    for program in programs:
-        try:
-            for course_code in program['course_codes']:
-                for run in course_code['run_modes']:
-                    run_id = run['course_key']
-                    if run_id in course_ids:
-                        flattened.setdefault(run_id, []).append(program)
-        except KeyError:
-            log.exception('Unable to parse Programs API response: %r', program)
-
-    return flattened
-
-
-def get_programs_for_dashboard(user, course_keys):
-    """Build a dictionary of programs, keyed by course.
-
-    Given a user and an iterable of course keys, find all the programs relevant
-    to the user's dashboard and return them in a dictionary keyed by course key.
-
-    Arguments:
-        user (User): The user to authenticate as when requesting programs.
-        course_keys (list): List of course keys representing the courses in which
-            the given user has active enrollments.
-
-    Returns:
-        dict, containing programs keyed by course. Empty if programs cannot be retrieved.
-    """
-    programs_config = ProgramsApiConfig.current()
-    course_programs = {}
-
-    if not programs_config.is_student_dashboard_enabled:
-        log.debug('Display of programs on the student dashboard is disabled.')
-        return course_programs
-
-    programs = get_programs(user)
-    if not programs:
-        log.debug('No programs found for the user with ID %d.', user.id)
-        return course_programs
-
-    course_ids = [unicode(c) for c in course_keys]
-    course_programs = flatten_programs(programs, course_ids)
-
-    return course_programs
-
-
 def get_programs_for_credentials(user, programs_credentials):
     """ Given a user and an iterable of credentials, get corresponding programs
     data and return it as a list of dictionaries.
@@ -137,24 +82,65 @@ def get_programs_for_credentials(user, programs_credentials):
     return certificate_programs
 
 
-def get_program_detail_url(program, marketing_root):
-    """Construct the URL to be used when linking to program details.
+def invert_programs(programs, enrollments):
+    """Invert a list of program dictionaries.
+
+    Builds a dictionary of program dict lists keyed by course ID. The resulting dictionary
+    is suitable for use in applications where programs must be filtered by the course
+    runs they contain (e.g., student dashboard).
 
     Arguments:
-        program (dict): Representation of a program.
-        marketing_root (str): Root URL used to build links to program marketing pages.
+        programs (list): Containing dictionaries representing programs.
+        enrollments (list): Enrollments from whcih course IDs to key on can be extracted.
 
     Returns:
-        str, a link to program details
+        tuple, dict of programs keyed by course ID and list of course IDs themselves
     """
-    if ProgramsApiConfig.current().show_program_details:
-        base = reverse('program_details_view', kwargs={'program_id': program['id']}).rstrip('/')
-        slug = slugify(program['name'])
-    else:
-        base = marketing_root.rstrip('/')
-        slug = program['marketing_slug']
+    inverted = {}
+    # enrollment.course_id is really a course key (╯ಠ_ಠ）╯︵ ┻━┻
+    course_ids = [unicode(e.course_id) for e in enrollments]
 
-    return '{base}/{slug}'.format(base=base, slug=slug)
+    for program in programs:
+        for course_code in program['course_codes']:
+            for run in course_code['run_modes']:
+                run_id = run['course_key']
+                if run_id in course_ids:
+                    program_list = inverted.setdefault(run_id, list())
+                    if program not in program_list:
+                        program_list.append(program)
+
+    # Sort programs by name for consistent presentation.
+    for __, ps in inverted.iteritems():
+        ps.sort(key=lambda p: p['name'])
+
+    return inverted, course_ids
+
+
+def attach_program_detail_url(programs):
+    """Extend program representations by attaching a URL to be used when linking to program details.
+
+    Facilitates the building of context to be passed to templates containing program data.
+
+    Arguments:
+        programs (list): Containing dicts representing programs.
+
+    Returns:
+        tuple, list containing extended program dicts and configured program marketing URL
+    """
+    programs_config = ProgramsApiConfig.current()
+    marketing_url = urljoin(settings.MKTG_URLS.get('ROOT'), programs_config.marketing_path).rstrip('/')
+
+    for program in programs:
+        if programs_config.show_program_details:
+            base = reverse('program_details_view', kwargs={'program_id': program['id']}).rstrip('/')
+            slug = slugify(program['name'])
+        else:
+            base = marketing_url
+            slug = program['marketing_slug']
+
+        program['detail_url'] = '{base}/{slug}'.format(base=base, slug=slug)
+
+    return programs, marketing_url
 
 
 def get_completed_courses(student):
@@ -199,14 +185,12 @@ class ProgramProgressMeter(object):
         """
         enrollments = CourseEnrollment.enrollments_for_user(self.user)
         enrollments = sorted(enrollments, key=lambda e: e.created, reverse=True)
-        # enrollment.course_id is really a course key ಠ_ಠ
-        self.course_ids = [unicode(e.course_id) for e in enrollments]
 
-        flattened = flatten_programs(self.programs, self.course_ids)
+        inverted, self.course_ids = invert_programs(self.programs, enrollments)
 
         engaged_programs = []
         for course_id in self.course_ids:
-            for program in flattened.get(course_id, []):
+            for program in inverted.get(course_id, []):
                 if program not in engaged_programs:
                     engaged_programs.append(program)
 

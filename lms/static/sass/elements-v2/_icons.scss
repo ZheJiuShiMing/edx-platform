@@ -1,0 +1,31 @@
+.xseries-icon {
+  background: url('#{$static-path}/images/programs/xseries-icon.svg') no-repeat;
+}
+
+.micromasters-icon {
+  margin-top: $baseline * 0.05;
+  background: url('#{$static-path}/images/programs/micromasters-icon.svg') no-repeat;
+}
+
+.certificate-icon .certificate-body {
+  @include float(left);
+  @include margin-right($baseline*0.4);
+
+  margin-top: ($baseline/10);
+  width: 23px;
+  height: 20px;
+  padding: 2px;
+  background-color: palette(grayscale, white-t);
+  border-style: solid;
+  border-width: 2px;
+}
+
+.green-certificate-icon .certificate-body {
+  fill: palette(success, accent);
+  border-color: palette(success, accent);
+}
+
+.blue-certificate-icon .certificate-body {
+  fill: palette(primary, dark);
+  border-color: palette(primary, dark);
+}
