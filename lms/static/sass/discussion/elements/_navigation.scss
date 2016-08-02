@@ -7,7 +7,16 @@
 }
 
 // ------
-// Header
+// Discussion Forums Page Header
+// ------
+.discussion-board > .page-header {
+    div {
+       vertical-align: middle;
+    }
+}
+
+// ------
+// Topic Listing Header
 // ------
 .forum-nav-header {
   box-sizing: border-box;
@@ -20,8 +29,7 @@
 
 .forum-nav-browse {
     box-sizing: border-box;
-    // TODO: don't use table-cell for layout purposes as it switches the screenreader mode
-    display: table-cell;
+    width: 100%;
     vertical-align: middle;
     width: auto;
     padding: 11px;
@@ -52,28 +60,6 @@
 
 .forum-nav-browse-drop-arrow {
   @include margin-left($baseline/4);
-}
-
-.forum-nav-search {
-  box-sizing: border-box;
-  // TODO: don't use table-cell for layout purposes as it switches the screenreader mode
-  display: table-cell;
-  position: relative;
-  vertical-align: middle;
-  width: 50%;
-  padding: ($baseline/4);
-}
-
-.forum-nav-search .icon {
-  font-size: $forum-small-font-size;
-  position: absolute;
-  margin-top: -6px;
-  top: 50%;
-  @include right($baseline/4 + 1px + $baseline / 4); // Wrapper padding + border + input padding
-}
-
-.forum-nav-search-input {
-  width: 100%;
 }
 
 // -----------
