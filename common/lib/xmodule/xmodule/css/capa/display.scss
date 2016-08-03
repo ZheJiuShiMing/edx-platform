@@ -92,15 +92,8 @@ h2 {
 }
 
 .problem-hint {
-  &.hint-shown {
-    @include notification-by-type($active-color);
-    padding: $baseline / 2;
-  }
   color: $color-copy-tip;
   margin-bottom: 20px;
-  .icon {
-    @include margin-right($baseline / 2);
-  }
 }
 
 .hint-label {
@@ -946,8 +939,8 @@ div.problem .action {
     margin-bottom: $baseline / 2;
 
     @media (min-width: 768px) {
-      @include right($baseline * 1.5);
       position: absolute;
+      right: $baseline * 1.5;
       margin-top: -$baseline / 2;
     }
 
@@ -1076,16 +1069,16 @@ div.problem {
   div.capa_alert {
     margin-top: $baseline;
     padding: 8px 12px;
+    border: 1px solid #ebe8bf;
+    border-radius: 3px;
+    background: #fffcdd;
     font-size: 0.9em;
-
-    &.capa_alert_save {
-      @include notification-by-type($warning-color);
-    }
   }
 
-  .submission_response {
+  .notification {
     margin-top: $baseline / 2;
     padding: ($baseline * 0.4) ($baseline / 2);
+    min-width: auto;
     &.correct,
     &.partially-correct {
       @include notification-by-type($success-color);
@@ -1093,11 +1086,30 @@ div.problem {
     &.incorrect {
       @include notification-by-type($error-color);
     }
+    &.info {
+      @include notification-by-type($info-color);
+    }
+    &.warning {
+      @include notification-by-type($warning-color);
+    }
+    .icon {
+      position: relative;
+      float: left;
+      top: $baseline / 5;
+    }
+    .notification-message {
+      display: inline-block;
+      width: 82%;
+    }
+    .notification-btn-wrapper {
+      float: right;
+      width: 14%;
+    }
   }
 
-  .review-btn {
+  .notification-btn {
     @include float(right);
-    padding: $baseline / 10;
+    padding: ($baseline / 10) ($baseline / 4);
   }
 
   div.capa_reset {

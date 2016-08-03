@@ -424,7 +424,7 @@ class @Problem
   gentle_alert: (msg) =>
     if @el.find('.capa_alert').length
       @el.find('.capa_alert').remove()
-    alert_elem = "<div class='capa_alert capa_alert_save'><span class='icon fa fa-floppy-o'></span>" + msg + "</div>"
+    alert_elem = "<div class='capa_alert'>" + msg + "</div>"
     @el.find('.action').after(alert_elem)
     @el.find('.capa_alert').css(opacity: 0).animate(opacity: 1, 700)
     window.SR.readElts @el.find('.capa_alert')
@@ -834,6 +834,6 @@ class @Problem
         MathJax.Hub
         hint_container[0]
       ]
-      hint_container.addClass('hint-shown').attr('hint_index', response.hint_index)
+      hint_container.attr('hint_index', response.hint_index)
       @$('.hint-button').focus()  # a11y focus on click, like the Check button
 
