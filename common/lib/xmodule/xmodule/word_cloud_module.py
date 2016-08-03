@@ -49,7 +49,7 @@ class WordCloudFields(object):
     )
     num_inputs = Integer(
         display_name=_("Inputs"),
-        help=_("Number of text boxes available for students to input words/sentences."),
+        help=_("Number of text boxes available for learners to input words/sentences."),
         scope=Scope.settings,
         default=5,
         values={"min": 1}
@@ -70,7 +70,7 @@ class WordCloudFields(object):
 
     # Fields for descriptor.
     submitted = Boolean(
-        help=_("Whether this student has posted words to the cloud."),
+        help=_("Whether this learner has posted words to the cloud."),
         scope=Scope.user_state,
         default=False
     )
@@ -80,7 +80,7 @@ class WordCloudFields(object):
         default=[]
     )
     all_words = Dict(
-        help=_("All possible words from all students."),
+        help=_("All possible words from all learners."),
         scope=Scope.user_state_summary
     )
     top_words = Dict(
