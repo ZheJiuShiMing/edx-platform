@@ -6,14 +6,12 @@ from django.core.urlresolvers import reverse
 from openedx.core.djangolib.markup import HTML, Text
 %>
 
-<%namespace name='static' file='static_content.html'/>
-
 <div class="wrapper-footer wrapper">
   <footer class="primary" role="contentinfo">
 
     <div class="footer-content-primary">
       <div class="colophon">
-        <p>&copy; ${settings.COPYRIGHT_YEAR} <a data-rel="edx.org" href="${static.marketing_link('ROOT')}" rel="external">${settings.PLATFORM_NAME}</a>.</p>
+        <p>&copy; ${settings.COPYRIGHT_YEAR} <a data-rel="edx.org" href="${marketing_link('ROOT')}" rel="external">${settings.PLATFORM_NAME}</a>.</p>
       </div>
 
       % if is_any_marketing_link_set(['TOS', 'PRIVACY']):
@@ -21,12 +19,12 @@ from openedx.core.djangolib.markup import HTML, Text
           <ol>
             % if is_marketing_link_set('TOS'):
               <li class="nav-item nav-peripheral-tos">
-                <a data-rel="edx.org" href="${static.marketing_link('TOS')}">${_("Terms of Service")}</a>
+                <a data-rel="edx.org" href="${marketing_link('TOS')}">${_("Terms of Service")}</a>
               </li>
             % endif
             % if is_marketing_link_set('PRIVACY'):
               <li class="nav-item nav-peripheral-pp">
-                <a data-rel="edx.org" href="${static.marketing_link('PRIVACY')}">${_("Privacy Policy")}</a>
+                <a data-rel="edx.org" href="${marketing_link('PRIVACY')}">${_("Privacy Policy")}</a>
               </li>
             % endif
           </ol>
