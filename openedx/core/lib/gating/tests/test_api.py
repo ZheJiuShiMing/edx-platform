@@ -15,7 +15,6 @@ from student.tests.factories import UserFactory
 
 @attr('shard_2')
 @ddt
-@patch.dict('django.conf.settings.FEATURES', {'MILESTONES_APP': True})
 class TestGatingApi(ModuleStoreTestCase, MilestonesTestCaseMixin):
     """
     Tests for the gating API

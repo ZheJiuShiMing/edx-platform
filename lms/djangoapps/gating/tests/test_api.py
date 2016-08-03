@@ -26,10 +26,6 @@ class GatingTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase):
         """
         super(GatingTestCase, self).setUp()
 
-        # Patch Milestones feature flag
-        self.settings_patcher = patch.dict('django.conf.settings.FEATURES', {'MILESTONES_APP': True})
-        self.settings_patcher.start()
-
         # create course
         self.course = CourseFactory.create(
             org='edX',

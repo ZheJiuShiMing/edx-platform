@@ -518,7 +518,7 @@ class AccessTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase, MilestonesTes
         self.assertTrue(access._has_access_course(staff, 'see_in_catalog', course))
         self.assertTrue(access._has_access_course(staff, 'see_about_page', course))
 
-    @patch.dict("django.conf.settings.FEATURES", {'ENABLE_PREREQUISITE_COURSES': True, 'MILESTONES_APP': True})
+    @patch.dict("django.conf.settings.FEATURES", {'ENABLE_PREREQUISITE_COURSES': True})
     def test_access_on_course_with_pre_requisites(self):
         """
         Test course access when a course has pre-requisite course yet to be completed
@@ -568,7 +568,7 @@ class AccessTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase, MilestonesTes
         )
         self.assertEqual(bool(access._has_access_course(self.staff, 'load_mobile', descriptor)), staff_expected)
 
-    @patch.dict("django.conf.settings.FEATURES", {'ENABLE_PREREQUISITE_COURSES': True, 'MILESTONES_APP': True})
+    @patch.dict("django.conf.settings.FEATURES", {'ENABLE_PREREQUISITE_COURSES': True})
     def test_courseware_page_unfulfilled_prereqs(self):
         """
         Test courseware access when a course has pre-requisite course yet to be completed
