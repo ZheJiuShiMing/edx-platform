@@ -98,12 +98,10 @@ source, template_path = Loader(engine).load_template_source(path)
     </script>
 </%def>
 
-<%def name="marketing_link(name)">
-    <%
-        link = marketing_link(name)
-        return return "/" if link == "#" else link
-    %>
-</%def>
+<%def name="marketing_link(name)"><%
+    link = marketing_link(name)
+    return "/" if link == "#" else link
+%></%def>
 
 <%def name="require_module_async(module_name, class_name)">
   <%doc>
