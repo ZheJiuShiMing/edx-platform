@@ -125,6 +125,17 @@ class PersistentSubsectionGradeModel(TimeStampedModel):
     visible_blocks = models.ForeignKey(VisibleBlocksModel)
 
     @classmethod
+    def save_grade(cls, **kwargs):
+        """
+        Wrapper for create_grade or update_grade, depending on which applies.
+        Takes the same arguments as both of thsoe methods.
+        """
+        try:
+            cls.update_grade(**kwargs)
+        except cls.DoesNotExist:
+            cls.create_grade(**kwargs)
+
+    @classmethod
     def create_grade(cls, **kwargs):
         """
         Instantiates a new model instance using the provided kwargs, formatted as follows:
