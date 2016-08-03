@@ -10,7 +10,6 @@ from collections import namedtuple
 import ddt
 from nose.plugins.attrib import attr
 from edxval import api
-from milestones.tests.utils import MilestonesTestCaseMixin
 from xmodule.modulestore.tests.factories import ItemFactory
 from xmodule.video_module import transcripts_utils
 from xmodule.modulestore.django import modulestore
@@ -200,7 +199,7 @@ class TestVideoAPIMixin(object):
 
 
 @attr('shard_2')
-class TestNonStandardCourseStructure(MobileAPITestCase, TestVideoAPIMixin, MilestonesTestCaseMixin):
+class TestNonStandardCourseStructure(MobileAPITestCase, TestVideoAPIMixin):
     """
     Tests /api/mobile/v0.5/video_outlines/courses/{course_id} with no course set
     """
