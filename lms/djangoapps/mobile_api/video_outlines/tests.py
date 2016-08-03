@@ -199,7 +199,7 @@ class TestVideoAPIMixin(object):
 
 
 @attr('shard_2')
-class TestNonStandardCourseStructure(MobileAPITestCase, TestVideoAPIMixin):
+class TestNonStandardCourseStructure(MobileAPITestCase, TestVideoAPIMixin, MilestonesTestCaseMixin):
     """
     Tests /api/mobile/v0.5/video_outlines/courses/{course_id} with no course set
     """

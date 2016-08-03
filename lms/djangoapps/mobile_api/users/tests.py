@@ -437,7 +437,7 @@ class TestCourseStatusPATCH(CourseStatusAPITestCase, MobileAuthUserTestMixin,
 @attr('shard_2')
 @patch.dict(settings.FEATURES, {'ENABLE_MKTG_SITE': True})
 @override_settings(MKTG_URLS={'ROOT': 'dummy-root'})
-class TestCourseEnrollmentSerializer(MobileAPITestCase):
+class TestCourseEnrollmentSerializer(MobileAPITestCase, MilestonesTestCaseMixin):
     """
     Test the course enrollment serializer
     """
