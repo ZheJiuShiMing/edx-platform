@@ -47,4 +47,8 @@ class Migration(migrations.Migration):
             name='persistentsubsectiongrademodel',
             unique_together=set([('user_id', 'usage_key')]),
         ),
+        migrations.AlterIndexTogether(
+            name='persistentsubsectiongrademodel',
+            index_together=set([('user_id', 'usage_key')]),
+        ),
     ]

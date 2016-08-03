@@ -59,14 +59,18 @@ class VisibleBlocksModel(models.Model):
 
 class BlockRecord(object):
     """
-    todo: docstring
+    An object encapsulating all relevant information for representing a block at the time it was used for grade
+    calculation.
     """
 
     def __init__(self, weight, max_score, locator):
         """
-        Takes a weight, max score, and BlockUsageLocator.
+        Creates a BlockRecord.
 
-        todo: make this method docstring better
+        Params:
+            weight (float)
+            max_score (float)
+            locator (BlockUsageLocator or string)
         """
         self.weight = weight
         self.max_score = max_score
@@ -91,15 +95,17 @@ class PersistentSubsectionGradeModel(TimeStampedModel):
     """
     A django model tracking persistent grades at the subsection level.
 
-    TODO: intended query patterns are fluid at the moment, document them here as they're firmed up.
+    TODO: here are the other query patterns listed in the ticket that are not currently used. Should any of these indices be built?
+        user_id, course_id, content_type, is_valid
+        course_id, edit-timestamp
+        edit-timestamp
     """
 
     class Meta(object):
         index_together = [
-            # TODO: nail down indices as we flesh out the API layer
+            ('user_id', 'usage_key')
         ]
 
-        # TODO: should course_version be included here?
         unique_together = (('user_id', 'usage_key'))
 
     id = UnsignedBigIntAutoField(primary_key=True)  # pylint: disable=invalid-name
@@ -139,7 +145,7 @@ class PersistentSubsectionGradeModel(TimeStampedModel):
             course_id=kwargs['usage_key'].course_key,
             usage_key=kwargs['usage_key'],
             course_version=kwargs['course_version'],
-            subtree_edited_date=kwargs['subtree_edited_date'],  # TODO: required, or default to now?
+            subtree_edited_date=kwargs['subtree_edited_date'],
             earned_all=kwargs['earned_all'],
             possible_all=kwargs['possible_all'],
             earned_graded=kwargs['earned_graded'],
