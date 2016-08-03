@@ -77,13 +77,6 @@ class GatingTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase):
             display_name='untitled problem 2'
         )
 
-    def tearDown(self):
-        """
-        Tear down initial setup
-        """
-        self.settings_patcher.stop()
-        super(GatingTestCase, self).tearDown()
-
 
 class TestGetXBlockParent(GatingTestCase):
     """
