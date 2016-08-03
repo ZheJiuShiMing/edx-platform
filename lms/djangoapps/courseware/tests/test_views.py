@@ -1976,7 +1976,6 @@ class TestIndexViewWithGating(ModuleStoreTestCase, MilestonesTestCaseMixin):
 
         CourseEnrollmentFactory(user=self.user, course_id=self.course.id)
 
-    @patch.dict(settings.FEATURES, {'MILESTONES_APP': True})
     def test_index_with_gated_sequential(self):
         """
         Test index view with a gated sequential raises Http404

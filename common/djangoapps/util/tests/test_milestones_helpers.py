@@ -115,8 +115,12 @@ class MilestonesHelpersTestCase(ModuleStoreTestCase):
         response = milestones_helpers.get_service()
         self.assertIsNone(response)
 
+    @patch.dict('django.conf.settings.FEATURES', {'MILESTONES_APP': True})
     def test_any_unfulfilled_milestones(self):
-        """ Tests any_unfulfilled_milestones for invalid arguments """
+        """
+        Tests any_unfulfilled_milestones for invalid arguments with
+        the app enabled
+         """
         with self.assertRaises(InvalidCourseKeyException):
             milestones_helpers.any_unfulfilled_milestones(None, self.user)
         with self.assertRaises(InvalidUserException):
