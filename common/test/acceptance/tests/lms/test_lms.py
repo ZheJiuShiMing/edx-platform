@@ -1307,6 +1307,7 @@ class LMSLanguageTest(UniqueCourseTest):
         select_option_by_text(language_selector, 'Dummy Language (Esperanto)')
         self.dashboard_page.wait_for_ajax()
         self.account_settings.visit()
+        self.account_settings.wait_for_ajax()
         self.assertEqual(self.account_settings.value_for_dropdown_field('pref-lang'), u'Dummy Language (Esperanto)')
         self.assertEqual(
             get_selected_option_text(language_selector),

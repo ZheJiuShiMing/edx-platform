@@ -181,6 +181,7 @@ class StudioLanguageTest(WebAppTest):
         select_option_by_text(language_selector, dummy_language)
         self.dashboard_page.wait_for_ajax()
         self.account_settings.visit()
+        self.account_settings.wait_for_ajax()
         self.assertEqual(self.account_settings.value_for_dropdown_field('pref-lang'), dummy_language)
         self.assertEqual(
             get_selected_option_text(language_selector),
