@@ -75,6 +75,7 @@ except:
 from django.conf import settings
 from django.template.engine import Engine
 from django.template.loaders.filesystem import Loader
+from edxmako.shortcuts import marketing_link
 engine = Engine(dirs=settings.DEFAULT_TEMPLATE_ENGINE['DIRS'])
 source, template_path = Loader(engine).load_template_source(path)
 %>${source | n, decode.utf8}</%def>
@@ -95,6 +96,13 @@ source, template_path = Loader(engine).load_template_source(path)
             });
         }).call(this, require || RequireJS.require);
     </script>
+</%def>
+
+<%def name="marketing_link(name)">
+    <%
+        link = marketing_link(name)
+        return return "/" if link == "#" else link
+    %>
 </%def>
 
 <%def name="require_module_async(module_name, class_name)">
