@@ -171,17 +171,19 @@
             ];
 
             // set TimeZoneField to listen to CountryField
-            getUserField = function (list, search) {
-                return _.find(list, function (field) {
-                    return field.view.options.valueAttribute === search;
-                }).view;
-            };
-            var userFields = _.find(aboutSectionsData, function (section) {
-                return section.title === 'Basic Account Information';
-            });
-            var timeZoneDropdownField = getUserField(userFields.fields, 'time_zone');
-            var countryDropdownField = getUserField(userFields.fields, 'country');
-            timeZoneDropdownField.listenToCountryView(countryDropdownField);
+            // getUserField = function (list, search) {
+            //     return _.find(list, function (field) {
+            //         return field.view.options.valueAttribute === search;
+            //     }).view;
+            // };
+            // var userFields = _.find(aboutSectionsData, function (section) {
+            //     return section.title === 'Basic Account Information';
+            // });
+            // var timeZoneDropdownField = getUserField(userFields.fields, 'time_zone');
+            // var countryDropdownField = getUserField(userFields.fields, 'country');
+            // timeZoneDropdownField.listenToCountryView(countryDropdownField);
+
+            aboutSectionsData[0].fields[6].view.listenToCountryView(aboutSectionsData[0].fields[5].view);
 
             accountsSectionData = [
                 {
