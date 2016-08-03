@@ -384,7 +384,7 @@ class AccessTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase, MilestonesTes
         Tests that "visible_to_staff_only" overrides start date.
         """
         expected_access = expected_error_type is None
-        mock_unit = Mock(location="location", user_partitions=[])
+        mock_unit = Mock(location=self.course.location, user_partitions=[])
         mock_unit._class_tags = {}  # Needed for detached check in _has_access_descriptor
         mock_unit.visible_to_staff_only = visible_to_staff_only
         mock_unit.start = start
@@ -407,7 +407,7 @@ class AccessTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase, MilestonesTes
         """
         Tests that descriptor has access in preview mode.
         """
-        mock_unit = Mock(location="location", user_partitions=[])
+        mock_unit = Mock(location=self.course.location, user_partitions=[])
         mock_unit._class_tags = {}  # Needed for detached check in _has_access_descriptor
         mock_unit.visible_to_staff_only = False
         mock_unit.start = start
@@ -426,7 +426,7 @@ class AccessTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase, MilestonesTes
         Tests that descriptor has no access when start date in future & without preview.
         """
         expected_access = expected_error_type is None
-        mock_unit = Mock(user_partitions=[])
+        mock_unit = Mock(location=self.course.location, user_partitions=[])
         mock_unit._class_tags = {}  # Needed for detached check in _has_access_descriptor
         mock_unit.visible_to_staff_only = False
         mock_unit.start = start
