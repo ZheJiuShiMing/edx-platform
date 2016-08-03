@@ -335,7 +335,7 @@ def get_configuration_url(name):
     Return 'EMPTY_URL' if given url name is not defined in configuration urls.
     """
     urls = configuration_helpers.get_value("urls", default={})
-    return urls.get(name) or EMPTY_URL
+    return urls.get(name) or "/"
 
 
 def get_url(name):
